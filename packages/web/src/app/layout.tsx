@@ -32,9 +32,13 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-background text-foreground">
         <CoordEventsProvider>
-          <div className="grid min-h-screen lg:grid-cols-[18rem_minmax(0,1fr)]">
+          <div className="relative grid min-h-screen lg:grid-cols-[19.5rem_minmax(0,1fr)]">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(79,70,229,0.08),transparent_32%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.06),transparent_28%)]" />
             <AppSidebar />
-            <main className="min-w-0 bg-muted/30">{children}</main>
+            <main className="relative min-w-0">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-[linear-gradient(180deg,rgba(255,255,255,0.58),transparent)]" />
+              <div className="relative">{children}</div>
+            </main>
           </div>
         </CoordEventsProvider>
       </body>

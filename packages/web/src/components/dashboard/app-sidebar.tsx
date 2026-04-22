@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Activity, KanbanSquare, ListTodo, MessagesSquare, Network } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useCoordEvents } from "@/lib/coord/sse";
 
@@ -39,47 +41,48 @@ export function AppSidebar() {
   const connection = useCoordEvents();
 
   return (
-    <aside className="border-b bg-background/95 px-4 py-5 backdrop-blur lg:min-h-screen lg:border-r lg:border-b-0 lg:px-5 lg:py-6">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 lg:max-w-none">
-        <div className="space-y-3">
-          <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-              <Network className="size-5" />
-            </div>
-            <div className="space-y-1">
-              <p className="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">
-                mcp-coord
-              </p>
-              <h1 className="text-lg font-semibold tracking-tight">
-                Dashboard
-              </h1>
-            </div>
-          </div>
-          <div className="rounded-2xl border bg-muted/40 p-4">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground">
-                  Real-time
-                </p>
-                <p className="mt-1 text-sm font-medium">
-                  {labelForStatus(connection)}
-                </p>
+    <aside className="relative border-b border-border/70 bg-background/78 px-4 py-4 backdrop-blur xl:px-5 xl:py-5 lg:min-h-screen lg:border-r lg:border-b-0">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-[radial-gradient(circle_at_top_left,rgba(79,70,229,0.12),transparent_50%)]" />
+
+      <div className="relative mx-auto flex max-w-6xl flex-col gap-5 lg:h-[calc(100vh-2.5rem)] lg:max-w-none">
+        <Card className="rounded-[1.75rem]">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex size-11 items-center justify-center rounded-[1.35rem] bg-primary/12 text-primary shadow-[0_14px_34px_-24px_rgba(79,70,229,0.45)]">
+                <Network className="size-5" />
               </div>
-              <span
-                className={cn(
-                  "inline-flex h-2.5 w-2.5 rounded-full",
-                  dotClassName(connection),
-                )}
-              />
+              <div className="space-y-1">
+                <p className="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">
+                  mcp-coord
+                </p>
+                <h1 className="text-lg font-semibold tracking-tight">Dashboard</h1>
+              </div>
             </div>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              {connection.reason ??
-                (connection.lastEventAt
-                  ? `Last event at ${formatTimestamp(connection.lastEventAt)}`
-                  : "Waiting for the first dashboard event.")}
-            </p>
-          </div>
-        </div>
+
+            <div className="mt-4 rounded-[1.35rem] border border-border/70 bg-muted/28 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground">
+                    Real-time
+                  </p>
+                  <p className="mt-1 text-sm font-medium">{labelForStatus(connection)}</p>
+                </div>
+                <span
+                  className={cn(
+                    "inline-flex h-2.5 w-2.5 rounded-full shadow-[0_0_0_6px_rgba(255,255,255,0.55)]",
+                    dotClassName(connection),
+                  )}
+                />
+              </div>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                {connection.reason ??
+                  (connection.lastEventAt
+                    ? `Last event at ${formatTimestamp(connection.lastEventAt)}`
+                    : "Waiting for the first dashboard event.")}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
 
         <nav className="grid gap-2">
           {navigation.map((item) => {
@@ -92,17 +95,19 @@ export function AppSidebar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "rounded-2xl border px-4 py-3 transition-colors",
+                  "rounded-[1.35rem] border px-4 py-3.5 shadow-[0_18px_40px_-42px_rgba(15,23,42,0.5)] transition-all",
                   isActive
-                    ? "border-primary/20 bg-primary/10 text-foreground"
-                    : "border-transparent hover:border-border hover:bg-muted/60",
+                    ? "border-primary/20 bg-primary/[0.08] text-foreground shadow-[0_22px_55px_-42px_rgba(79,70,229,0.4)]"
+                    : "border-transparent bg-transparent hover:border-border/70 hover:bg-background/88",
                 )}
               >
                 <div className="flex items-start gap-3">
                   <div
                     className={cn(
-                      "mt-0.5 flex size-9 items-center justify-center rounded-xl",
-                      isActive ? "bg-primary text-primary-foreground" : "bg-muted",
+                      "mt-0.5 flex size-10 items-center justify-center rounded-[1rem] shadow-[0_12px_28px_-22px_rgba(15,23,42,0.45)]",
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-background text-muted-foreground",
                     )}
                   >
                     <Icon className="size-4" />
@@ -119,13 +124,20 @@ export function AppSidebar() {
           })}
         </nav>
 
-        <div className="rounded-2xl border bg-muted/40 p-4 text-sm leading-6 text-muted-foreground">
-          <p className="font-medium text-foreground">Realtime dashboard</p>
-          <p className="mt-2">
-            Panels listen for coord invalidations and fall back to 15s polling if
-            the dashboard stream keeps dropping.
-          </p>
-        </div>
+        <Card className="mt-auto rounded-[1.5rem]">
+          <CardContent className="p-4 text-sm leading-6 text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <p className="font-medium text-foreground">Realtime dashboard</p>
+              <Badge variant="muted" className="tracking-[0.18em]">
+                SSE
+              </Badge>
+            </div>
+            <p className="mt-2">
+              Panels listen for coord invalidations and fall back to 15s polling if
+              the dashboard stream keeps dropping.
+            </p>
+          </CardContent>
+        </Card>
       </div>
     </aside>
   );

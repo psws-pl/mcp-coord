@@ -1,5 +1,7 @@
 import { DatabaseZap, LucideIcon } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import type { CoordResourceMeta } from "@/lib/coord/types";
 
 interface PanelFrameProps {
@@ -18,25 +20,29 @@ export function PanelFrame({
   children,
 }: PanelFrameProps) {
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-6 px-6 py-8 lg:px-10 lg:py-10">
-      <section className="rounded-3xl border bg-background p-6 shadow-sm lg:p-8">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-          <div className="max-w-3xl space-y-3">
-            <p className="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">
-              {eyebrow}
-            </p>
-            <div className="space-y-2">
-              <h2 className="text-3xl font-semibold tracking-tight text-balance">
-                {title}
-              </h2>
-              <p className="text-base leading-7 text-muted-foreground">
-                {description}
-              </p>
+    <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col gap-6 px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
+      <Card className="relative overflow-hidden rounded-[2rem] bg-background/90 backdrop-blur">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top_left,rgba(79,70,229,0.14),transparent_52%),linear-gradient(90deg,rgba(255,255,255,0.78),transparent)]" />
+
+        <CardContent className="relative p-6 lg:p-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-3xl space-y-3">
+              <Badge variant="muted" className="w-fit px-3 py-1 text-xs tracking-[0.28em]">
+                {eyebrow}
+              </Badge>
+              <div className="space-y-2">
+                <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-[2rem]">
+                  {title}
+                </h2>
+                <p className="text-base leading-7 text-muted-foreground">
+                  {description}
+                </p>
+              </div>
             </div>
+            <SourceBadge meta={meta} />
           </div>
-          <SourceBadge meta={meta} />
-        </div>
-      </section>
+        </CardContent>
+      </Card>
 
       {children}
     </div>
@@ -55,18 +61,18 @@ export function SummaryCard({
   helper: string;
 }) {
   return (
-    <article className="rounded-2xl border bg-background p-5 shadow-sm">
-      <div className="flex items-center gap-3">
-        <div className="flex size-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+    <Card className="p-5">
+      <div className="flex items-start gap-3">
+        <div className="flex size-11 items-center justify-center rounded-[1.2rem] bg-primary/10 text-primary shadow-[0_16px_35px_-24px_rgba(79,70,229,0.35)]">
           <Icon className="size-5" />
         </div>
         <div className="min-w-0">
           <p className="text-sm font-medium text-muted-foreground">{label}</p>
-          <p className="text-2xl font-semibold tracking-tight">{value}</p>
+          <p className="mt-1 text-3xl font-semibold tracking-tight">{value}</p>
         </div>
       </div>
       <p className="mt-4 text-sm leading-6 text-muted-foreground">{helper}</p>
-    </article>
+    </Card>
   );
 }
 
@@ -80,13 +86,13 @@ export function PreviewList({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-3xl border bg-background p-6 shadow-sm lg:p-8">
+    <Card className="rounded-[2rem] p-6 lg:p-8">
       <div className="space-y-1">
         <h3 className="text-xl font-semibold tracking-tight">{title}</h3>
         <p className="text-sm leading-6 text-muted-foreground">{description}</p>
       </div>
       <div className="mt-5 space-y-3">{children}</div>
-    </section>
+    </Card>
   );
 }
 
@@ -94,7 +100,7 @@ function SourceBadge({ meta }: { meta: CoordResourceMeta }) {
   const isStub = meta.source === "stub";
 
   return (
-    <div className="flex max-w-sm items-start gap-3 rounded-2xl border bg-muted/40 px-4 py-3 text-sm leading-6">
+    <Card className="flex max-w-sm items-start gap-3 rounded-[1.35rem] bg-background/85 px-4 py-3 text-sm leading-6">
       <DatabaseZap className="mt-0.5 size-4 shrink-0 text-primary" />
       <div>
         <p className="font-medium text-foreground">
@@ -107,6 +113,6 @@ function SourceBadge({ meta }: { meta: CoordResourceMeta }) {
               : "Connected to coord API.")}
         </p>
       </div>
-    </div>
+    </Card>
   );
 }

@@ -11,40 +11,41 @@ export default async function TasksPage() {
     listPlans(),
   ]);
   const reviewCount = tasksData.items.filter((task) => task.status === "review").length;
+  const inProgressCount = tasksData.items.filter((task) => task.status === "in_progress").length;
   const doneCount = tasksData.items.filter((task) => task.status === "done").length;
-  const assignedCount = tasksData.items.filter((task) => task.owner).length;
+  const blockedCount = tasksData.items.filter((task) => task.status === "blocked").length;
 
   return (
-      <PanelFrame
-        eyebrow="Tasks"
-        title="Tasks kanban panel"
-        description="Track work by status lane, filter the board by owner or plan, and keep task detail sheets aligned with live coord invalidations."
-        meta={tasksData.meta}
-      >
+    <PanelFrame
+      eyebrow="Tasks"
+      title="Tasks kanban panel"
+      description="Track work by status lane, filter the board by owner or plan, and keep task detail sheets aligned with live coord invalidations."
+      meta={tasksData.meta}
+    >
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <SummaryCard
           icon={KanbanSquare}
           label="Visible tasks"
           value={String(tasksData.items.length)}
-          helper="Board lanes stay keyed to the shared task collection so filters and detail sheets stay in sync."
+          helper="A wider, cleaner shell keeps the board readable without losing the existing live task collection."
         />
         <SummaryCard
           icon={ArrowUpRight}
-          label="In review"
-          value={String(reviewCount)}
-          helper="A dedicated review lane keeps handoff work visible before tasks move to done."
+          label="Active flow"
+          value={String(inProgressCount + reviewCount)}
+          helper="In-progress and review work stay elevated so handoffs and current execution are easy to scan."
         />
         <SummaryCard
           icon={UsersRound}
-          label="Assigned"
-          value={String(assignedCount)}
-          helper={`Owner filtering includes the ${agentsData.items.length} tracked agents plus any preview-only assignees.`}
+          label="Agents available"
+          value={String(agentsData.items.length)}
+          helper="Quick assign stays close to each card, using the same tracked agent list that powers filters."
         />
         <SummaryCard
           icon={CircleCheckBig}
-          label="Completed"
-          value={String(doneCount)}
-          helper={`Plan filters currently span ${plansData.items.length} plans across the available task set.`}
+          label="Done / blocked"
+          value={`${doneCount} / ${blockedCount}`}
+          helper={`Plan filters still span ${plansData.items.length} plans while blocked work stays visible as risk.`}
         />
       </section>
 
