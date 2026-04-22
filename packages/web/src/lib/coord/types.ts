@@ -81,7 +81,7 @@ export interface CoordTaskSummary {
   updatedAt: string;
 }
 
-export interface CoordTaskDetail extends CoordTaskSummary {}
+export type CoordTaskDetail = CoordTaskSummary;
 
 export interface CoordMessageSummary {
   id: string;

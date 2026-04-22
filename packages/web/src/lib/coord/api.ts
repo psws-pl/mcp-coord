@@ -807,30 +807,6 @@ function parseAgent(value: unknown): CoordAgentSummary {
   };
 }
 
-function parseAgentDetail(value: unknown): CoordAgentDetail {
-  const summary = parseAgent(value);
-  const record = getRecord(value, "agent detail");
-  const currentTaskValue = readValue(record, "currentTask", "current_task");
-  const taskHistoryValue = readValue(record, "taskHistory", "task_history");
-  const recentMessagesValue = readValue(
-    record,
-    "recentMessages",
-    "recent_messages",
-  );
-
-  return {
-    ...summary,
-    currentTask:
-      currentTaskValue == null ? null : parseTask(currentTaskValue),
-    taskHistory: Array.isArray(taskHistoryValue)
-      ? taskHistoryValue.map(parseTask)
-      : [],
-    recentMessages: Array.isArray(recentMessagesValue)
-      ? recentMessagesValue.map(parseMessage)
-      : [],
-  };
-}
-
 function parseTask(value: unknown): CoordTaskSummary {
   const record = getRecord(value, "task");
 

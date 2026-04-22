@@ -63,7 +63,7 @@ component: api
 
 image:
   repository: ghcr.io/<OWNER>/mcp-coord-api
-  tag: v0.2.0
+  tag: v0.2.1
 
 ingress:
   enabled: true
@@ -97,7 +97,7 @@ Install:
 
 ```bash
 helm upgrade --install coord-api oci://ghcr.io/<OWNER>/charts/coord \
-  --version 0.2.0 \
+  --version 0.2.1 \
   -n coord --create-namespace \
   -f coord-api-values.yaml
 ```
@@ -112,7 +112,7 @@ component: web
 
 image:
   repository: ghcr.io/<OWNER>/mcp-coord-web
-  tag: v0.2.0
+  tag: v0.2.1
 
 ingress:
   enabled: true
@@ -141,7 +141,7 @@ Install:
 
 ```bash
 helm upgrade --install coord-web oci://ghcr.io/<OWNER>/charts/coord \
-  --version 0.2.0 \
+  --version 0.2.1 \
   -n coord \
   -f coord-web-values.yaml
 ```
@@ -360,7 +360,7 @@ All tools are exposed through `tools/list` and `tools/call` on `POST /mcp`.
 
    ```bash
    helm upgrade coord-api oci://ghcr.io/<OWNER>/charts/coord \
-     --version 0.2.0 \
+     --version 0.2.1 \
      -n coord \
      -f coord-api-values.yaml
    ```
@@ -369,7 +369,7 @@ All tools are exposed through `tools/list` and `tools/call` on `POST /mcp`.
 
    ```bash
    helm upgrade coord-web oci://ghcr.io/<OWNER>/charts/coord \
-     --version 0.2.0 \
+     --version 0.2.1 \
      -n coord \
      -f coord-web-values.yaml
    ```
