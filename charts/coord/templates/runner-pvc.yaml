@@ -1,0 +1,21 @@
+{{- if .Values.runner.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: agent-workdir
+  labels:
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: runner
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_") }}
+spec:
+  accessModes:
+    {{- toYaml .Values.runner.workdir.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.runner.workdir.size }}
+  {{- with .Values.runner.workdir.storageClassName }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}
