@@ -46,17 +46,7 @@ function useCoordEventSource(): CoordConnectionState {
   const retryTimerRef = useRef<number | null>(null);
   const retriesRef = useRef(0);
 
-  const endpoint = useMemo(() => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
-
-    if (!baseUrl) {
-      return null;
-    }
-
-    const url = new URL("/sse", baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`);
-    url.searchParams.set("stream", "dashboard");
-    return url.toString();
-  }, []);
+  const endpoint = useMemo(() => "/api/coord/sse?stream=dashboard", []);
 
   useEffect(() => {
     if (!endpoint) {
