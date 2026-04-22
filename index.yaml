@@ -1,0 +1,15 @@
+apiVersion: v1
+entries:
+  coord:
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2026-04-22T11:01:41.033345676Z"
+    description: Reusable Helm chart for coord-api, coord-web, and optional runner
+      releases
+    digest: e1cfceb7f85cd952443fccb670222b8db7093ed979777af982a82e0ac3fcc2b2
+    name: coord
+    type: application
+    urls:
+    - coord-0.2.0.tgz
+    version: 0.2.0
+generated: "2026-04-22T11:01:41.03335005Z"
