@@ -10,6 +10,8 @@ import { PanelFrame, SummaryCard } from "@/components/dashboard/panel-frame";
 import { listPlans, listTasks } from "@/lib/coord/api";
 import { getPlanActionStatus } from "@/lib/coord/plans";
 
+export const dynamic = "force-dynamic";
+
 export default async function PlansPage() {
   const [plansData, tasksData] = await Promise.all([listPlans(), listTasks()]);
   const activePlans = plansData.items.filter(

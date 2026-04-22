@@ -4,6 +4,8 @@ import { MessagesTimeline } from "@/components/dashboard/messages-timeline";
 import { PanelFrame, SummaryCard } from "@/components/dashboard/panel-frame";
 import { listAgents, listMessages } from "@/lib/coord/api";
 
+export const dynamic = "force-dynamic";
+
 export default async function MessagesPage() {
   const [messagesData, agentsData] = await Promise.all([listMessages(), listAgents()]);
   const pendingCount = messagesData.items.filter((message) => message.status === "pending").length;

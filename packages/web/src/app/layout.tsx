@@ -5,6 +5,8 @@ import "./globals.css";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { CoordEventsProvider } from "@/lib/coord/sse";
 
+export const dynamic = "force-dynamic";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

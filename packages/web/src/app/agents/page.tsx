@@ -5,6 +5,8 @@ import { PanelFrame, SummaryCard } from "@/components/dashboard/panel-frame";
 import { deriveAgentCardStatus } from "@/lib/coord/agents";
 import { listAgents, listMessages, listTasks } from "@/lib/coord/api";
 
+export const dynamic = "force-dynamic";
+
 export default async function AgentsPage() {
   const [agentsData, tasksData, messagesData] = await Promise.all([
     listAgents(),

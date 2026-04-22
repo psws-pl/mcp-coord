@@ -4,6 +4,8 @@ import { TasksBoard } from "@/components/dashboard/tasks-board";
 import { PanelFrame, SummaryCard } from "@/components/dashboard/panel-frame";
 import { listAgents, listPlans, listTasks } from "@/lib/coord/api";
 
+export const dynamic = "force-dynamic";
+
 export default async function TasksPage() {
   const [tasksData, agentsData, plansData] = await Promise.all([
     listTasks(),
