@@ -1,0 +1,134 @@
+component: api
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/psws-pl/mcp-coord-api
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+
+container:
+  port: 3000
+  command: []
+  args: []
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+  annotations: {}
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: coord.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+env:
+  values:
+    PORT: "3000"
+  secretRefs: []
+
+secret:
+  create: false
+  name: ""
+  databaseUrl: ""
+  coordApiKeys: ""
+  extra: {}
+
+probes:
+  liveness:
+    enabled: false
+    path: /health
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readiness:
+    enabled: false
+    path: /health
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+
+migration:
+  enabled: false
+  annotations: {}
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 300
+  image:
+    repository: ""
+    pullPolicy: IfNotPresent
+    tag: ""
+  command:
+    - node
+    - node_modules/typeorm/cli.js
+  args:
+    - migration:run
+    - -d
+    - dist/database/coord-data-source.js
+
+runner:
+  enabled: false
+  replicaCount: 1
+  image:
+    repository: ghcr.io/psws-pl/mcp-coord-runner
+    pullPolicy: IfNotPresent
+    tag: ""
+  container:
+    command:
+      - node
+      - /app/dist/index.js
+    args: []
+  config:
+    mcoordUrl: ""
+    githubRepo: ""
+    defaultDriver: claude
+    pollIntervalSeconds: 10
+    jobTtlSeconds: 3600
+  secretRefs:
+    secretName: ""
+    mcoordKey:
+      envName: MCOORD_KEY
+      key: MCOORD_KEY
+    githubToken:
+      envName: GITHUB_TOKEN
+      key: GITHUB_TOKEN
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+  rbac:
+    create: true
+  workdir:
+    mountPath: /workspace/project
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    storageClassName: ""
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext:
+    fsGroup: 1001
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+podAnnotations: {}
+podLabels: {}
+
+resources: {}
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

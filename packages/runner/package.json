@@ -1,0 +1,23 @@
+{
+  "name": "@mcp-coord/runner",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Provider-agnostic agent execution layer for mcp-coord — watches for tasks, spawns k8s Jobs, manages git branch isolation",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "build:test": "tsc -p tsconfig.test.json",
+    "test": "pnpm run build:test && node --test dist-test/test/*.test.js",
+    "start": "node dist/index.js",
+    "dev": "tsc -p tsconfig.build.json --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.57",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@kubernetes/client-node": "^1.4.0"
+  }
+}
