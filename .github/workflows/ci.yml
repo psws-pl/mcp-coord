@@ -144,3 +144,6 @@ jobs:
 
       - name: Build web image
         run: docker build --file packages/web/Dockerfile --tag mcp-coord-web:ci .
+
+      - name: Build runner image
+        run: docker build --file packages/runner/Dockerfile --tag mcp-coord-runner:ci .

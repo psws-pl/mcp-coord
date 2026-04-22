@@ -37,17 +37,20 @@ One Helm chart deploys both components. Install it once for `component=api` and 
 
 If you are publishing your own releases from this repo:
 
-- GitHub Pages must serve the repo's `gh-pages` branch
-- the repo needs a `CR_TOKEN` secret for `helm/chart-releaser-action`
+- release tags publish `ghcr.io/<OWNER>/mcp-coord-api:<tag>`, `ghcr.io/<OWNER>/mcp-coord-web:<tag>`, `ghcr.io/<OWNER>/mcp-coord-runner:<tag>`, and the Helm chart at `oci://ghcr.io/<OWNER>/charts/coord`
+- the release workflow uses the built-in `GITHUB_TOKEN` for both image pushes and `helm push`
 - default images and chart publishing assume the `psws-pl/mcp-coord` repository; override those only if you publish under a different owner
 
 ## Quick start
 
-Add the published chart repo:
+Authenticate to GHCR first if the package is private or you want authenticated pulls:
 
 ```bash
-helm repo add mcp-coord https://<OWNER>.github.io/mcp-coord
-helm repo update
+export GHCR_USERNAME=<OWNER>
+export GHCR_TOKEN=<TOKEN>
+printf '%s' "$GHCR_TOKEN" | helm registry login ghcr.io \
+  --username "$GHCR_USERNAME" \
+  --password-stdin
 ```
 
 ### 1) Deploy the API
@@ -93,7 +96,8 @@ runner:
 Install:
 
 ```bash
-helm upgrade --install coord-api mcp-coord/coord \
+helm upgrade --install coord-api oci://ghcr.io/<OWNER>/charts/coord \
+  --version 0.2.0 \
   -n coord --create-namespace \
   -f coord-api-values.yaml
 ```
@@ -136,7 +140,8 @@ secret:
 Install:
 
 ```bash
-helm upgrade --install coord-web mcp-coord/coord \
+helm upgrade --install coord-web oci://ghcr.io/<OWNER>/charts/coord \
+  --version 0.2.0 \
   -n coord \
   -f coord-web-values.yaml
 ```
@@ -346,13 +351,16 @@ All tools are exposed through `tools/list` and `tools/call` on `POST /mcp`.
 1. Update chart metadata locally:
 
    ```bash
-   helm repo update
+   printf '%s' "$GHCR_TOKEN" | helm registry login ghcr.io \
+     --username "$GHCR_USERNAME" \
+     --password-stdin
    ```
 
 2. Upgrade the API first, keeping the same secret values and enabling migrations if schema changes are present:
 
    ```bash
-   helm upgrade coord-api mcp-coord/coord \
+   helm upgrade coord-api oci://ghcr.io/<OWNER>/charts/coord \
+     --version 0.2.0 \
      -n coord \
      -f coord-api-values.yaml
    ```
@@ -360,7 +368,8 @@ All tools are exposed through `tools/list` and `tools/call` on `POST /mcp`.
 3. Upgrade the web release:
 
    ```bash
-   helm upgrade coord-web mcp-coord/coord \
+   helm upgrade coord-web oci://ghcr.io/<OWNER>/charts/coord \
+     --version 0.2.0 \
      -n coord \
      -f coord-web-values.yaml
    ```
@@ -374,8 +383,8 @@ All tools are exposed through `tools/list` and `tools/call` on `POST /mcp`.
 ### For maintainers cutting a new release
 
 - `charts/coord/Chart.yaml` version must match the pushed tag (`v<chart-version>`)
-- the release workflow publishes the chart to `gh-pages`
-- `CR_TOKEN` must exist, and GitHub Pages must already be configured
+- the release workflow publishes the chart to `oci://ghcr.io/<OWNER>/charts/coord`
+- Helm chart pushes authenticate to GHCR with the built-in `GITHUB_TOKEN`
 
 ## Current implementation notes
 
